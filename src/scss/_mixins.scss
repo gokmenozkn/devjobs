@@ -1,0 +1,22 @@
+$xs: 576px; // portrait phones
+$sm: 768px; // tablets
+$md: 992px; // laptops
+$lg: 1200px; // desktops
+
+@mixin tablet {
+  @media (min-width: $sm) {
+    @content;
+  }
+}
+
+@mixin laptop {
+  @media (min-width: $md) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: $lg) {
+    @content;
+  }
+}
