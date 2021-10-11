@@ -28,7 +28,7 @@ $radius: 0px 0px 100px 0px;
 
 .container {
   background-color: $violet;
-  background-image: url('./../assets/desktop/bg-pattern-header.svg');
+  background-image: url('./assets/desktop/bg-pattern-header.svg');
   background-size: cover;
   height: 16rem;
   border-bottom-left-radius: 10rem;

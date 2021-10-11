@@ -1,35 +1,42 @@
 <template>
-  <div :class="$style.container">
+  <div :class="[$style.container, darkTheme ? $style.search__dark__theme : '']">
     <form :class="$style.form" @submit.prevent="submitHandler(title, location)">
       <div :class="[$style.form__group, $style.companies]">
         <div :class="$style.flex">
-          <img src="./../assets/desktop/icon-search.svg" alt="" />
+          <img src="./assets/desktop/icon-search.svg" alt="" />
           <input
             type="text"
             placeholder="Filter by title, companies, expertise..."
             v-model="title"
+            :class="darkTheme ? $style.darkInput : ''"
           />
         </div>
       </div>
       <div :class="$style.form__group">
         <div :class="$style.flex">
-          <img src="./../assets/desktop/icon-location.svg" alt="" />
+          <img src="./assets/desktop/icon-location.svg" alt="" />
           <input
             type="text"
             placeholder="Filter by location..."
             v-model="location"
+            :class="darkTheme ? $style.darkInput : ''"
           />
         </div>
       </div>
       <div :class="$style.form__group">
         <div :class="$style.flex" style="justify-content: space-between">
           <div @click="changeChecked" :class="$style.checkbox__container">
-            <div v-show="!isChecked" :class="$style.checkbox"></div>
+            <div
+              v-show="!isChecked"
+              :class="[$style.checkbox, darkTheme ? $style.darkCheckbox : '']"
+            ></div>
             <div v-show="isChecked" :class="$style.icon_check_container">
               <img src="./assets/desktop/icon-check.svg" alt="check-icon" />
             </div>
           </div>
-          <span :class="$style.fulltime">
+          <span
+            :class="[$style.fulltime, darkTheme ? $style.darkFulltime : '']"
+          >
             Full Time
             <span :class="$style.only_word">Only</span>
           </span>
@@ -50,11 +57,16 @@ export default {
   components: {
     SearchButton,
   },
+  computed: {
+    darkTheme() {
+      return this.$store.state.darkTheme;
+    },
+  },
   setup() {
+    const store = useStore();
     const isChecked = ref(false);
     const title = ref("");
     const location = ref("");
-    const store = useStore();
 
     function changeChecked() {
       isChecked.value = !isChecked.value;
@@ -94,6 +106,7 @@ input {
   outline: none;
   font-size: 1.6rem;
   width: 100%;
+  background-color: inherit;
 }
 
 input::placeholder {
@@ -106,8 +119,6 @@ input::placeholder {
   border-radius: 6px;
 
   .form {
-    // display: grid;
-    // grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     display: flex;
     align-items: center;
     height: 8rem;
@@ -179,5 +190,26 @@ input::placeholder {
   @include laptop {
     display: inline;
   }
+}
+
+.search__dark__theme {
+  background-color: $very-dark-blue;
+}
+
+.darkCheckbox {
+  background-color: #FFFFFF;
+}
+
+.darkInput {
+  color: #fff;
+}
+
+.darkInput::placeholder {
+  color: #fff;
+  opacity: 0.5;
+}
+
+.darkFulltime {
+  color: #fff;
 }
 </style>

@@ -1,5 +1,9 @@
 <template>
-  <div :class="item.card" v-for="job in filteredJobs" :key="job.id">
+  <div
+    :class="[item.card, darkTheme ? item.card__dark__theme : '']"
+    v-for="job in filteredJobs"
+    :key="job.id"
+  >
     <div
       :class="item.card__img"
       :style="{ backgroundColor: job.logoBackground }"
@@ -13,7 +17,12 @@
         <div>{{ job.contract }}</div>
       </div>
     </div>
-    <a href="#" :class="item.card__title">{{ job.position }}</a>
+    <a
+      href="#"
+      :class="[item.card__title, darkTheme ? item.title__dark__theme : '']"
+    >
+      {{ job.position }}
+    </a>
     <span :class="item.card__brand">{{ job.company }}</span>
     <span :class="item.card__country">{{ job.location }}</span>
   </div>
@@ -44,16 +53,20 @@ export default {
     filteredJobs() {
       return this.$store.state.filteredJobs;
     },
+    darkTheme() {
+      return this.$store.state.darkTheme;
+    },
   },
 };
 </script>
 
-<style module="item" lang="scss">
+<style scoped module="item" lang="scss">
 @import "./../scss/variables";
 
 span {
   display: block;
 }
+
 .card {
   position: relative;
   background-color: #fff;
@@ -98,5 +111,13 @@ span {
   &__country {
     color: $violet;
   }
+}
+
+.card__dark__theme {
+  background-color: $very-dark-blue;
+}
+
+.title__dark__theme {
+  color: #fff;
 }
 </style>

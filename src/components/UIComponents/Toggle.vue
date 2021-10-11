@@ -1,7 +1,7 @@
 <template>
-  <div @click="changeTheme" :class="$style.toggler">
+  <div :class="$style.toggler">
     <img src="./../assets/desktop/icon-sun.svg" alt="sun" />
-    <div :class="$style.toggle">
+    <div @click="changeTheme" :class="$style.toggle">
       <div
         :class="[$style.toggle__circle, theme === 'dark' ? $style.dark : '']"
       ></div>
@@ -21,6 +21,8 @@ export default {
   methods: {
     changeTheme() {
       this.$store.commit("changeTheme");
+      let { darkTheme } = this.$store.state;
+      document.body.style.backgroundColor = darkTheme ? "#121721" : "#F2F2F2";
     },
   },
 };
@@ -56,7 +58,7 @@ export default {
       width: 1.4rem;
       background-color: $violet;
       border-radius: 50%;
-      transition: 0.4s all ease-in-out;
+      transition: 0.2s all ease;
     }
   }
 }
