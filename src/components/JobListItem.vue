@@ -17,12 +17,12 @@
         <div>{{ job.contract }}</div>
       </div>
     </div>
-    <a
-      href="#"
+    <router-link
+      :to="`/detail/${job.id}`"
       :class="[item.card__title, darkTheme ? item.title__dark__theme : '']"
     >
       {{ job.position }}
-    </a>
+    </router-link>
     <span :class="item.card__brand">{{ job.company }}</span>
     <span :class="item.card__country">{{ job.location }}</span>
   </div>
@@ -110,6 +110,7 @@ span {
 
   &__country {
     color: $violet;
+    font-weight: 700;
   }
 }
 

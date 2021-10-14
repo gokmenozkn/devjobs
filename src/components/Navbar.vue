@@ -2,7 +2,7 @@
   <div :class="$style.container">
     <nav :class="$style.nav">
       <div :class="$style.row">
-        <div :class="$style.brand">devjobs</div>
+        <router-link to="/" :class="$style.brand">devjobs</router-link>
         <toggle />
       </div>
     </nav>
