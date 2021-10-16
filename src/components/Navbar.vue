@@ -31,7 +31,11 @@ $radius: 0px 0px 100px 0px;
   background-image: url('./assets/desktop/bg-pattern-header.svg');
   background-size: cover;
   height: 16rem;
-  border-bottom-left-radius: 10rem;
+  border-bottom-left-radius: 0;
+
+  @include small {
+    border-bottom-left-radius: 10rem;
+  }
 }
 
 .nav {
@@ -39,7 +43,7 @@ $radius: 0px 0px 100px 0px;
   margin: 0 auto;
   padding: 4rem 2em 0 2em;
 
-  @include laptop {
+  @include desktop {
     padding: 4rem 0 0 0;
   }
 

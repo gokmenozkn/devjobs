@@ -1,0 +1,49 @@
+@import "./mixins";
+@import "./variables";
+
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: "Kumbh Sans", sans-serif;
+  font-size: 62.5%;
+}
+
+body {
+  background-color: #f2f2f2;
+}
+
+a {
+  text-decoration: none;
+}
+
+$grid__cols: 12;
+
+@for $i from 1 through $grid__cols {
+  .col-#{$i} {
+    width: 100% / ($grid__cols / $i);
+  }
+}
+
+// laptop or larger 
+@include laptop {
+  @for $i from 1 through $grid__cols {
+    .col-md-#{$i} {
+      width: 100% / ($grid__cols / $i);
+    }
+  }
+}
+
+// between tablet and laptop
+@media (min-width: $sm) and (max-width: $md) {
+  @for $i from 1 through $grid__cols {
+    .col-sm-#{$i} {
+      width: 100% / ($grid__cols / $i);
+    }
+  }
+}

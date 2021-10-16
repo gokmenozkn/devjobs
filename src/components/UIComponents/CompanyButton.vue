@@ -1,10 +1,13 @@
 <template>
-  <a href="#" :class="$style.link">Company Site</a>
+  <a :href="url" target="_blank" :class="$style.link">Company Site</a>
 </template>
 
 <script>
 export default {
   name: "CompanyButton",
+  props: {
+    url: String,
+  },
   computed: {
     color() {
       return this.$store.state.darkTheme ? "white" : "#5964E0";

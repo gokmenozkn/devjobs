@@ -1,30 +1,33 @@
 <template>
   <div
-    :class="[item.card, darkTheme ? item.card__dark__theme : '']"
     v-for="job in filteredJobs"
     :key="job.id"
+    class="col-12 col-md-4 col-sm-6"
+    :class="[item.pd1, item.pd_sm_0]"
   >
-    <div
-      :class="item.card__img"
-      :style="{ backgroundColor: job.logoBackground }"
-    >
-      <img :src="require(`${job.logo}`)" :alt="job.company" />
-    </div>
-    <div :class="item.card__time">
-      <div :style="timeStyle">
-        <div>{{ job.postedAt }}</div>
-        <div id="circle" :style="circleStyle"></div>
-        <div>{{ job.contract }}</div>
+    <div :class="[item.card, darkTheme ? item.card__dark__theme : '']">
+      <div
+        :class="item.card__img"
+        :style="{ backgroundColor: job.logoBackground }"
+      >
+        <img :src="require(`${job.logo}`)" :alt="job.company" />
       </div>
+      <div :class="item.card__time">
+        <div :style="timeStyle">
+          <div>{{ job.postedAt }}</div>
+          <div id="circle" :style="circleStyle"></div>
+          <div>{{ job.contract }}</div>
+        </div>
+      </div>
+      <router-link
+        :to="`/detail/${job.id}`"
+        :class="[item.card__title, darkTheme ? item.title__dark__theme : '']"
+      >
+        {{ job.position }}
+      </router-link>
+      <span :class="item.card__brand">{{ job.company }}</span>
+      <span :class="item.card__country">{{ job.location }}</span>
     </div>
-    <router-link
-      :to="`/detail/${job.id}`"
-      :class="[item.card__title, darkTheme ? item.title__dark__theme : '']"
-    >
-      {{ job.position }}
-    </router-link>
-    <span :class="item.card__brand">{{ job.company }}</span>
-    <span :class="item.card__country">{{ job.location }}</span>
   </div>
 </template>
 
@@ -62,6 +65,7 @@ export default {
 
 <style scoped module="item" lang="scss">
 @import "./../scss/variables";
+@import "./../scss/mixins";
 
 span {
   display: block;
@@ -120,5 +124,19 @@ span {
 
 .title__dark__theme {
   color: #fff;
+}
+
+@for $i from 0 through 10 {
+  .pd#{$i} {
+    padding: #{$i}rem;
+  }
+}
+
+@media (max-width: $xs) {
+  @for $i from 0 through 10 {
+  .pd_sm_#{$i} {
+    padding: #{$i}rem;
+  }
+}
 }
 </style>

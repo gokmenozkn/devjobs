@@ -1,6 +1,8 @@
 <template>
   <div :class="$style.list">
-    <JobListItem />
+    <div :class="$style.row">
+      <JobListItem />
+    </div>
   </div>
 </template>
 
@@ -20,13 +22,20 @@ export default {
 
 .list {
   margin-top: 10em;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
-  grid-column-gap: 1.1rem;
-  grid-row-gap: 6.5rem;
+  // display: grid;
+  // grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+  // grid-column-gap: 1.1rem;
+  // grid-row-gap: 6.5rem;
   
-  @include desktop{
-    grid-column-gap: 3rem;
+  // @include desktop{
+  //   grid-column-gap: 3rem;
+  // }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 5.5rem;
+    // column-gap: 1.1rem;
   }
 }
 </style>

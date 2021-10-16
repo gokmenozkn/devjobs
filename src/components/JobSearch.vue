@@ -1,7 +1,7 @@
 <template>
-  <div :class="[$style.container, darkTheme ? $style.search__dark__theme : '']">
+  <div :class="$style.container">
     <form :class="$style.form" @submit.prevent="submitHandler(title, location)">
-      <div :class="[$style.form__group, $style.companies]">
+      <div :class="$style.form__group">
         <div :class="$style.flex">
           <img src="./assets/desktop/icon-search.svg" alt="" />
           <input
@@ -26,10 +26,7 @@
       <div :class="$style.form__group">
         <div :class="$style.flex" style="justify-content: space-between">
           <div @click="changeChecked" :class="$style.checkbox__container">
-            <div
-              v-show="!isChecked"
-              :class="[$style.checkbox, darkTheme ? $style.darkCheckbox : '']"
-            ></div>
+            <div v-show="!isChecked" :class="$style.checkbox"></div>
             <div v-show="isChecked" :class="$style.icon_check_container">
               <img src="./assets/desktop/icon-check.svg" alt="check-icon" />
             </div>
@@ -41,6 +38,24 @@
             <span :class="$style.only_word">Only</span>
           </span>
           <SearchButton />
+        </div>
+      </div>
+    </form>
+
+    <form :class="$style.formMobile">
+      <div :class="$style.formGroupMobile">
+        <input
+          :class="[$style.input, darkTheme ? $style.darkInput : '']"
+          type="text"
+          placeholder="Filter by title..."
+        />
+        <div :class="$style.formGroupMobile__right">
+          <div :class="$style.filterIcon">
+            <img src="./assets/mobile/icon-filter.svg" alt="filter" />
+          </div>
+          <div :class="$style.searchIcon">
+            <img src="./assets/mobile/search-mobile.svg" alt="search" />
+          </div>
         </div>
       </div>
     </form>
@@ -60,6 +75,12 @@ export default {
   computed: {
     darkTheme() {
       return this.$store.state.darkTheme;
+    },
+    containerColor() {
+      return this.$store.state.darkTheme ? "#19202D" : "white";
+    },
+    checkboxColor() {
+      return this.$store.state.darkTheme ? "white" : "#121721";
     },
   },
   setup() {
@@ -115,13 +136,17 @@ input::placeholder {
 }
 
 .container {
-  background-color: $white;
+  background-color: v-bind(containerColor);
   border-radius: 6px;
 
   .form {
-    display: flex;
-    align-items: center;
-    height: 8rem;
+    display: none;
+
+    @include tablet {
+      display: flex;
+      align-items: center;
+      height: 8rem;
+    }
 
     &__group {
       display: flex;
@@ -149,7 +174,7 @@ input::placeholder {
 }
 
 .checkbox {
-  background-color: $midnight;
+  background-color: v-bind(checkboxColor);
   opacity: 0.1;
   width: 2.4rem;
   height: 2.4rem;
@@ -192,14 +217,6 @@ input::placeholder {
   }
 }
 
-.search__dark__theme {
-  background-color: $very-dark-blue;
-}
-
-.darkCheckbox {
-  background-color: #FFFFFF;
-}
-
 .darkInput {
   color: #fff;
 }
@@ -211,5 +228,34 @@ input::placeholder {
 
 .darkFulltime {
   color: #fff;
+}
+
+.formMobile {
+  display: flex;
+  align-items: center;
+  height: 8rem;
+  padding: 0 2.4rem;
+
+  @include tablet {
+    display: none;
+  }
+
+  .formGroupMobile {
+    height: 100%;
+    width: 100%;
+    display: flex;
+
+    &__right {
+      display: flex;
+      align-items: center;
+
+      .searchIcon {
+        background-color: $violet;
+        padding: 1.4rem;
+        border-radius: 0.5rem;
+        margin-left: 2.4rem;
+      }
+    }
+  }
 }
 </style>

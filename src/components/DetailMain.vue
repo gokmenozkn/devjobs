@@ -4,61 +4,35 @@
       <div :class="$style.left">
         <div :class="$style.left__time">
           <div :style="timeStyle">
-            <div>1w ago</div>
+            <div>{{ item.postedAt }}</div>
             <div id="circle" :style="circleStyle"></div>
-            <div>Part Time</div>
+            <div>{{ item.contract }}</div>
           </div>
         </div>
-        <h3 :class="$style.left__title">Senior Software Engineer</h3>
-        <span :class="$style.left__country">United Kingdom</span>
+        <h3 :class="$style.left__title">{{ item.position }}</h3>
+        <span :class="$style.left__country">{{ item.location }}</span>
       </div>
       <div :class="$style.right">
-        <div>
-          <a :class="$style.applyButton" href="#">Apply Now</a>
+        <div :class="$style.btn_container">
+          <a :class="$style.applyButton" :href="item.apply" target="_blank">Apply Now</a>
         </div>
       </div>
     </div>
 
     <div :class="$style.main__description">
       <p>
-        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus
-        hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet
-        vel, dapibus id, mattis vel, nisi. Sed pretium, ligula sollicitudin
-        laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu
-        nibh. Nullam mollis. Ut justo. Suspendisse potenti. Sed egestas, ante et
-        vulputate volutpat, eros pede semper est, vitae luctus metus libero eu
-        augue. Morbi purus libero, faucibus adipiscing, commodo quis, gravida
-        id, est. Sed lectus. Praesent elementum hendrerit tortor. Sed semper
-        lorem at felis. Vestibulum volutpat, lacus a ultrices sagittis, mi neque
-        euismod dui, eu pulvinar nunc sapien ornare nisl. Phasellus pede arcu,
-        dapibus eu, fermentum et, dapibus sed, urna.
+        {{ item.description }}
       </p>
     </div>
 
     <div :class="$style.main__requirements">
       <h4 :class="$style.main__requirements__title">Requirements</h4>
       <p>
-        Morbi interdum mollis sapien. Sed ac risus. Phasellus lacinia, magna a
-        ullamcorper laoreet, lectus arcu pulvinar risus, vitae facilisis libero
-        dolor a purus. Sed vel lacus. Mauris nibh felis, adipiscing varius,
-        adipiscing in, lacinia vel, tellus. Suspendisse ac urna. Etiam
-        pellentesque mauris ut lectus. Nunc tellus ante, mattis eget, gravida
-        vitae, ultricies ac, leo. Integer leo pede, ornare a, lacinia eu,
-        vulputate vel, nisl.
+        {{ item.requirements.content }}
       </p>
       <ul :class="$style.main__requirements__list">
-        <li><span>Morbi interdum mollis sapien. Sed</span></li>
-        <li>
-          <span>
-            Phasellus lacinia magna a ullamcorper laoreet, lectus arcu pulvinar
-            risus
-          </span>
-        </li>
-        <li>
-          <span>
-            Mauris nibh felis, adipiscing varius, adipiscing in, lacinia vel,
-            tellus. Suspendisse ac urna. Etiam pellentesque mauris ut lectus.
-          </span>
+        <li v-for="(el, index) in requirementsItems" :key="index">
+          <span>{{ el }}</span>
         </li>
       </ul>
     </div>
@@ -66,33 +40,12 @@
     <div :class="$style.main__role">
       <h4 :class="$style.main__role__title">What Will You Do</h4>
       <p>
-        Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae
-        luctus metus libero eu augue. Morbi purus libero, faucibus adipiscing,
-        commodo quis, gravida id, est. Sed lectus. Praesent elementum hendrerit
-        tortor. Sed semper lorem at felis. Vestibulum volutpat, lacus a ultrices
-        sagittis, mi neque euismod dui, eu pulvinar nunc sapien ornare nisl.
-        Phasellus pede arcu, dapibus eu, fermentum et, dapibus sed, urna.
+        {{ item.role.content }}
       </p>
 
       <ol :class="$style.main__role__list">
-        <li><span>Morbi interdum mollis sapien. Sed</span></li>
-        <li>
-          <span>
-            Phasellus lacinia magna a ullamcorper laoreet, lectus arcu pulvinar
-            risus
-          </span>
-        </li>
-        <li>
-          <span>
-            Mauris nibh felis, adipiscing varius, adipiscing in, lacinia vel,
-            tellus. Suspendisse ac urna. Etiam pellentesque mauris ut lectus.
-          </span>
-        </li>
-        <li>
-          <span>
-            Mauris nibh felis, adipiscing varius, adipiscing in, lacinia vel,
-            tellus. Suspendisse ac urna. Etiam pellentesque mauris ut lectus.
-          </span>
+        <li v-for="(el, index) in roleItems" :key="index">
+          <span>{{ el }}</span>
         </li>
       </ol>
     </div>
@@ -102,6 +55,9 @@
 <script>
 export default {
   name: "DetailMain",
+  props: {
+    item: Object,
+  },
   data() {
     return {
       timeStyle: {
@@ -123,8 +79,14 @@ export default {
     },
     mainHeadersColor() {
       return this.$store.state.darkTheme ? "white" : "#19202D";
-    }
-  }
+    },
+    requirementsItems() {
+      return this.item.requirements.items;
+    },
+    roleItems() {
+      return this.item.role.items;
+    },
+  },
 };
 </script>
 
@@ -132,7 +94,8 @@ export default {
 @import "./../scss/variables";
 @import "./../scss/mixins";
 
-h3, h4 {
+h3,
+h4 {
   color: v-bind(mainHeadersColor);
 }
 
@@ -143,9 +106,15 @@ h3, h4 {
 
   &__header {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    // align-items: center;
+    // justify-content: space-between;
     margin-bottom: 4rem;
+
+    @include small {
+      align-items: center;
+      justify-content: space-between;
+    } 
   }
 
   &__description {
@@ -223,14 +192,26 @@ h3, h4 {
 }
 
 .left {
+  flex: 0 0 100%;
+  margin-bottom: 5rem;
+
+  @include small {
+    flex: auto;
+    margin-bottom: 0;
+  }
+
   &__time {
     color: $dark-gray;
     margin-bottom: 1.1rem;
   }
 
   &__title {
-    font-size: 2.8rem;
+    font-size: 2rem;
     margin-bottom: 1.4rem;
+
+    @include small {
+      font-size: 2.8rem;
+    }
   }
 
   &__country {
@@ -241,16 +222,31 @@ h3, h4 {
 }
 
 .right {
-  .applyButton {
-    background-color: $violet;
-    color: white;
-    font-weight: 700;
-    padding: 1.6rem 2.8rem;
-    border-radius: 0.5rem;
+  flex: 0 0 100%;
 
-    &:hover {
-      background-color: $light-violet;
+  @include small {
+    flex: auto;
+  }
+
+  .btn_container {
+    .applyButton {
+      display: block;
+      background-color: $violet;
+      color: white;
+      font-weight: 700;
+      padding: 1.6rem 2.8rem;
+      border-radius: 0.5rem;
+      text-align: center;
+  
+      // @include small {
+      //   display: initial;
+      // }
+  
+      &:hover {
+        background-color: $light-violet;
+      }
     }
   }
+
 }
 </style>
