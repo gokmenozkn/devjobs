@@ -51,6 +51,7 @@ $radius: 0px 0px 100px 0px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 1rem;
   }
 
 }

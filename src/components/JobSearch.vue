@@ -8,6 +8,7 @@
             type="text"
             placeholder="Filter by title, companies, expertise..."
             v-model="title"
+            @input="changeTitle"
             :class="darkTheme ? $style.darkInput : ''"
           />
         </div>
@@ -19,6 +20,7 @@
             type="text"
             placeholder="Filter by location..."
             v-model="location"
+            @input="changeLocation"
             :class="darkTheme ? $style.darkInput : ''"
           />
         </div>
@@ -42,18 +44,26 @@
       </div>
     </form>
 
-    <form :class="$style.formMobile">
+    <form
+      :class="$style.formMobile"
+      @submit.prevent="submitHandler(title, location)"
+    >
       <div :class="$style.formGroupMobile">
         <input
           :class="[$style.input, darkTheme ? $style.darkInput : '']"
           type="text"
           placeholder="Filter by title..."
+          v-model="title"
+          @input="changeTitle"
         />
         <div :class="$style.formGroupMobile__right">
           <div :class="$style.filterIcon">
             <img src="./assets/mobile/icon-filter.svg" alt="filter" />
           </div>
-          <div :class="$style.searchIcon">
+          <div
+            :class="$style.searchIcon"
+            @click="submitHandler(title, location)"
+          >
             <img src="./assets/mobile/search-mobile.svg" alt="search" />
           </div>
         </div>
@@ -63,8 +73,9 @@
 </template>
 
 <script>
+/* eslint-disable */
 import SearchButton from "./UIComponents/SearchButton.vue";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useStore } from "vuex";
 
 export default {
@@ -72,32 +83,38 @@ export default {
   components: {
     SearchButton,
   },
-  computed: {
-    darkTheme() {
-      return this.$store.state.darkTheme;
-    },
-    containerColor() {
-      return this.$store.state.darkTheme ? "#19202D" : "white";
-    },
-    checkboxColor() {
-      return this.$store.state.darkTheme ? "white" : "#121721";
-    },
-  },
   setup() {
+    // store
     const store = useStore();
-    const isChecked = ref(false);
-    const title = ref("");
-    const location = ref("");
 
+    // reactive variables
+    const title = ref(store.getters.TITLE);
+    const location = ref(store.getters.LOCATION);
+
+    // computeds
+    const darkTheme = computed(() => store.state.darkTheme);
+    const containerColor = computed(() =>
+      store.state.darkTheme ? "#19202D" : "white"
+    );
+    const checkboxColor = computed(() =>
+      store.state.darkTheme ? "white" : "#121721"
+    );
+    const isChecked = computed(() => store.getters.isFullTime);
+
+    // handlers
     function changeChecked() {
-      isChecked.value = !isChecked.value;
+      store.commit("changeIsFullTime");
     }
 
-    function onChange() {
-      console.log("Title: ", title.value);
+    function changeTitle(e) {
+      store.commit("changeTitle", e.target.value);
     }
 
-    function submitHandler(query, loc) {
+    function changeLocation(e) {
+      store.commit("changeLocation", e.target.value);
+    }
+
+    function submitHandler(query = "", loc = "") {
       const contract = isChecked.value ? "full time" : "";
       store.commit("SEARCH", {
         title: query,
@@ -111,8 +128,12 @@ export default {
       changeChecked,
       title,
       location,
-      onChange,
       submitHandler,
+      darkTheme,
+      containerColor,
+      checkboxColor,
+      changeTitle,
+      changeLocation,
     };
   },
 };
@@ -138,31 +159,31 @@ input::placeholder {
 .container {
   background-color: v-bind(containerColor);
   border-radius: 6px;
+  margin: 0 1rem;
+}
+.form {
+  display: none;
 
-  .form {
-    display: none;
+  @include tablet {
+    display: flex;
+    align-items: center;
+    height: 8rem;
+  }
 
-    @include tablet {
-      display: flex;
-      align-items: center;
-      height: 8rem;
+  &__group {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    padding: 0 2rem;
+    width: (100 / 3) * 1%;
+
+    @include laptop {
+      padding: 0 3.2rem;
     }
+  }
 
-    &__group {
-      display: flex;
-      height: 100%;
-      align-items: center;
-      padding: 0 2rem;
-      width: (100 / 3) * 1%;
-
-      @include laptop {
-        padding: 0 3.2rem;
-      }
-    }
-
-    .form__group + .form__group {
-      border-left: 1px solid rgba(110, 128, 152, 0.2);
-    }
+  .form__group + .form__group {
+    border-left: 1px solid rgba(110, 128, 152, 0.2);
   }
 }
 

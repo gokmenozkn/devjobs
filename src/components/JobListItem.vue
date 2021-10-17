@@ -3,7 +3,7 @@
     v-for="job in filteredJobs"
     :key="job.id"
     class="col-12 col-md-4 col-sm-6"
-    :class="[item.pd1, item.pd_sm_0]"
+    :class="item.pd1"
   >
     <div :class="[item.card, darkTheme ? item.card__dark__theme : '']">
       <div
@@ -134,9 +134,9 @@ span {
 
 @media (max-width: $xs) {
   @for $i from 0 through 10 {
-  .pd_sm_#{$i} {
-    padding: #{$i}rem;
+    .pd_sm_#{$i} {
+      padding: #{$i}rem;
+    }
   }
-}
 }
 </style>

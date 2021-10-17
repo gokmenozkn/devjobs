@@ -7,6 +7,9 @@ export default createStore({
     darkTheme: false,
     jobs: data,
     filteredJobs: data,
+    titleQuery: "",
+    locationQuery: "",
+    isFullTime: false,
   },
   mutations: {
     SEARCH(state, payload) {
@@ -18,5 +21,25 @@ export default createStore({
       );
     },
     changeTheme: (state) => (state.darkTheme = !state.darkTheme),
+    changeTitle(state, query) {
+      state.titleQuery = query;
+    },
+    changeLocation(state, query) {
+      state.locationQuery = query;
+    },
+    changeIsFullTime(state) {
+      state.isFullTime = !state.isFullTime;
+    },
+  },
+  getters: {
+    TITLE(state) {
+      return state.titleQuery;
+    },
+    LOCATION(state) {
+      return state.locationQuery;
+    },
+    isFullTime(state) {
+      return state.isFullTime;
+    },
   },
 });

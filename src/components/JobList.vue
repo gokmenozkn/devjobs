@@ -35,7 +35,6 @@ export default {
     display: flex;
     flex-wrap: wrap;
     row-gap: 5.5rem;
-    // column-gap: 1.1rem;
   }
 }
 </style>
