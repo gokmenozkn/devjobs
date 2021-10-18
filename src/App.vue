@@ -5,7 +5,7 @@
 
 <script>
 import Navbar from "@/components/Navbar.vue";
-import { onMounted } from "vue";
+import { useStore } from "vuex";
 
 export default {
   name: "App",
@@ -13,9 +13,10 @@ export default {
     Navbar,
   },
   setup() {
-    onMounted(() => {
-      document.title = "Dev Jobs";
-    });
+    document.title = "Dev Jobs";
+    const store = useStore();
+    store.commit("initTheme");
+    document.body.style.backgroundColor = store.state.darkTheme ? "#121721" : "#F2F2F2";
   },
 };
 </script>

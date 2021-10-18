@@ -20,7 +20,15 @@ export default createStore({
           job.contract.toLowerCase().includes(payload.contract)
       );
     },
-    changeTheme: (state) => (state.darkTheme = !state.darkTheme),
+    changeTheme(state) {
+      state.darkTheme = !state.darkTheme;
+      localStorage.darkTheme = state.darkTheme;
+    },
+    initTheme(state) {
+      if (localStorage.darkTheme) {
+        state.darkTheme = JSON.parse(localStorage.darkTheme);
+      }
+    },
     changeTitle(state, query) {
       state.titleQuery = query;
     },
