@@ -2,28 +2,33 @@
   <div :class="$style.toggler">
     <img src="./../assets/desktop/icon-sun.svg" alt="sun" />
     <div @click="changeTheme" :class="$style.toggle">
-      <div
-        :class="[$style.toggle__circle, theme === 'dark' ? $style.dark : '']"
-      ></div>
+      <div :class="[$style.toggle__circle, darkTheme ? $style.dark : '']"></div>
     </div>
     <img src="./../assets/desktop/icon-moon.svg" alt="moon" />
   </div>
 </template>
 
 <script>
+import { computed } from "vue";
+import { useStore } from "vuex";
+
 export default {
   name: "Toggle",
-  computed: {
-    theme() {
-      return this.$store.state.darkTheme ? "dark" : "light";
-    },
-  },
-  methods: {
-    changeTheme() {
-      this.$store.commit("changeTheme");
-      let { darkTheme } = this.$store.state;
+  setup() {
+    const store = useStore();
+    const darkTheme = computed(() => store.state.darkTheme);
+    console.log("Store theme: ", store.state.darkTheme);
+
+    function changeTheme() {
+      store.commit("changeTheme");
+      let { darkTheme } = store.state;
       document.body.style.backgroundColor = darkTheme ? "#121721" : "#F2F2F2";
-    },
+    }
+
+    return {
+      darkTheme,
+      changeTheme,
+    };
   },
 };
 </script>
