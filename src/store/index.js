@@ -23,7 +23,6 @@ export default createStore({
     changeTheme(state) {
       state.darkTheme = !state.darkTheme;
       localStorage.darkTheme = state.darkTheme;
-      console.log("Local dark:", localStorage.darkTheme);
     },
     initTheme(state) {
       if (localStorage.darkTheme) {
